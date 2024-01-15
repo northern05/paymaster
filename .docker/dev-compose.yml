@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  dev-billing-acre:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    env_file:
+      - ../.envs/.dev
+    image:
+      billing
+    container_name:
+      dev-billing-acre
+    ports:
+      - "6022:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      dev-acre:
+        ipv4_address: 172.21.0.8
+    volumes:
+      - ../:/usr/src/app
+    restart: always
+    command: bash -c 'uvicorn main:app --host 0.0.0.0'
+
+
+networks:
+  dev-acre:
+    external: true
